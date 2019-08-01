@@ -1,0 +1,136 @@
+# part of the panhandler application with docs at
+# https://github.com/PaloAltoNetworks/panhandler/blob/develop/docs/metadata_configuration.rst
+
+# unique snippet name
+name: Creating Multitenant VR
+# label used for menu selection
+label: Multitenancy VR
+description: Creating Tenant VR and Common Internet VR
+
+# type of device configuration
+# common types are panorama, panos, and template
+
+type: panos
+# preload static or default-based templates
+extends:
+
+# grouping of like snippets for dynamic menu creation in panhandler
+labels:
+  collection:
+    - Multitenant VR
+
+# variables used in the configuration templates
+# type_hint defines the form field used by panhandler
+# type_hints can be text, ip_address, or dropdown
+variables:
+  - name: tenant_1_VR
+    description: first_tenant_VR_Name
+    default: tenant_1_VR
+    type_hint: default
+  - name: tenant_1_interface
+    description: interface_for_first_tenant_VR
+    default: ethernet1/1
+    type_hint: ethernet interface
+  - name: tenant_1_default_route
+    description: route_name_for_first_tenant
+    default: tenant_1_to_common_VR
+    type_hint: default route name
+  - name: tenant_1_next_hop
+    description: default_route_for_first_tenant
+    default: 0.0.0.0/0
+    type_hint: default route
+  - name: tenant_2_VR
+    description: second tenant VR Name
+    default: tenant_2_VR
+    type_hint: default
+  - name: tenant_2_interface
+    description: interface_for_second_tenant_VR
+    default: ethernet1/2
+    type_hint: ethernet interface
+  - name: tenant_2_default_route
+    description: route_name_for_second_tenant
+    default: tenant_2_to_common_VR
+    type_hint: default route name
+  - name: tenanat_2_next_hop
+    description: default_route_for_second_tenant
+    default: 0.0.0.0/0
+    type_hint: default route
+  - name: common_vr
+    description: Common_VR_name
+    default: common_VR
+    type_hint: common_vr
+  - name: common_vr_interface
+    description: interface_for_common_VR
+    default: ethernet1/3
+    type_hint: ethernet1/3
+  - name: tenant_1_return_route
+    description: first_tenant_return_route_name
+    default: return_route_tenant_1
+    type_hint: tenant_1_return_route name
+  - name: tenant_1_subnet 
+    description: first_tenant_subnet
+    default: 1.1.1.0/24
+    type_hint: tenanat_1_subnet configured on its interface
+  - name: tenant_2_return_route
+    description: second_tenant_return_route_name
+    default: return_route_tenant_2
+  - name: tenant_2_subnet
+    description: second_tenant_subnet
+    default: 2.2.2.0/24
+    type_hint: second tenant subnet
+  - name: common_vr_next_hop_route
+    description: common_vr_next_hop
+    default: common vr next hop name
+    type_hint: common_vr_next_hop_route name
+  - name: common_vr_next_hop_ip
+    description: IP_address_next_hop_router
+    default: 10.10.10.20
+    type_hint: common_vr_next_hop_route name
+  - name: outside_destination_subnet
+    description: default_or_outside_subnet
+    default: 0.0.0.0/0
+    type_hint: default or outside subnet
+
+
+  # - name: edl_description
+  #   description: name of the external list
+  #   default: this is an ip block list
+  #   type_hint: text
+  # - name: edl_url
+  #   description: external list url
+  #   default: http://someurl.com
+  #   type_hint: text
+  # - name: tag_name
+  #   description: tag name
+  #   default: tag name
+  #   type_hint: text
+  # - name: tag_description
+  #   description: tag description
+  #   default: tag description
+  #   type_hint: text
+  # - name: tag_color
+  #   description: tag color
+  #   default: red
+  #   type_hint: dropdown
+  #   dd_list:
+  #     - key: blue
+  #       value: color3
+  #     - key: green
+  #       value: color2
+  #     - key: orange
+  #       value: color6
+  #     - key: red
+  #       value: color1
+
+# snippets used for api configuration including xpath and element as file name
+# files will load in the order listed
+snippets:
+  - name: multi_tenancy
+    xpath: /config/devices/entry[@name='localhost.localdomain']/network/virtual-router
+    file: vrouter.xml
+  # - name: tag
+  #   xpath: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/tag
+  #   file: tag.xml
+  # - name: security_rules
+  #   xpath: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/rulebase/security/rules
+  #   file: security_rules.xml
